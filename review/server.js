@@ -83,6 +83,26 @@ async function getHistory() {
   }
   return items;
 }
+
+async function markExpiredIfNeeded(state, settings) {
+  if (!state || state.status !== 'AWAITING_REVIEW') return state;
+  if (!cutoffPassed(settings.cutoffTime)) return state;
+  const next = {
+    ...state,
+    status: 'EXPIRED',
+    progress: {
+      ...(state.progress || {}),
+      stage: 'expired',
+      percent: 100,
+      current: `Approval cutoff ${settings.cutoffTime} IST passed. Nothing was submitted.`
+    },
+    expiredAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    updatedAtIST: nowIST()
+  };
+  await redis.set(keyFor(state.date), JSON.stringify(next), 'EX', Number(process.env.STATE_TTL_SECONDS || 604800));
+  return next;
+}
 function cutoffPassed(cutoffTime) {
   const [h, m] = cutoffTime.split(':').map(Number);
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
@@ -98,7 +118,7 @@ app.get('/health', async (_req, res) => {
 
 app.get('/api/status', requireBasicAuth, async (_req, res) => {
   const settings = await getSettings(redis);
-  const state = await getState();
+  const state = await markExpiredIfNeeded(await getState(), settings);
   res.json({
     ok: true,
     today: todayIST(),
