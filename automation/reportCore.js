@@ -51,11 +51,10 @@ export function dateTimeIST(date = new Date()) {
 }
 
 export function isFridayIST() {
-  const day = new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-US', {
     timeZone: process.env.TIMEZONE || 'Asia/Kolkata',
     weekday: 'short'
-  }).format(new Date());
-  return day === 'Fri';
+  }).format(new Date()) === 'Fri';
 }
 
 export async function loadAnswers() {
@@ -66,29 +65,25 @@ export async function loadAnswers() {
 
   const data = JSON.parse(answersRaw);
   const app = JSON.parse(appRaw);
-  const dailyBucket = isFridayIST() ? data.friday : data.weekday;
+  const friday = isFridayIST();
+  const dailyBucket = friday ? data.friday : data.weekday;
 
   const answers = FIELD_ORDER.map(({ key, bucket }) => ({
     key,
     value: String(bucket === 'constants' ? data.constants[key] : dailyBucket[key] ?? '')
   }));
 
-  const missing = answers.filter((item) => !item.value.trim()).map((item) => item.key);
-
   return {
     answers,
-    missing,
-    bucket: isFridayIST() ? 'friday' : 'weekday',
+    missing: answers.filter((item) => !item.value.trim()).map((item) => item.key),
+    bucket: friday ? 'friday' : 'weekday',
     timezone: process.env.TIMEZONE || app.timezone || 'Asia/Kolkata',
-    formUrl:
-      process.env.FORM_URL ||
-      'https://forms.cloud.microsoft/pages/responsepage.aspx?id=0AXnVXRck0GwwTa-4NQ-bvGJJtgnRZ5Fseet11Dp2IdUNDM3UUNaSVQySjBDSzc5WExJUzVOM0lLNS4u&origin=lprLink&route=shorturl'
+    formUrl: process.env.FORM_URL || 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=0AXnVXRck0GwwTa-4NQ-bvGJJtgnRZ5Fseet11Dp2IdUNDM3UUNaSVQySjBDSzc5WExJUzVOM0lLNS4u&origin=lprLink&route=shorturl'
   };
 }
 
-export async function fillAndVerify(page, answers) {
+export async function fillAndVerify(page, answers, onProgress = null) {
   const textboxes = await page.getByRole('textbox').all();
-
   if (textboxes.length !== answers.length) {
     throw new Error(`Expected ${answers.length} form textboxes, found ${textboxes.length}. The form may have changed.`);
   }
@@ -100,6 +95,11 @@ export async function fillAndVerify(page, answers) {
     const confirmed = await textboxes[i].inputValue();
     const ok = confirmed === value;
     results.push({ index: i + 1, key, expected: value, actual: confirmed, ok });
+
+    if (onProgress) {
+      await onProgress({ index: i + 1, total: textboxes.length, key, ok });
+    }
+
     if (!ok) throw new Error(`Field verification failed for ${key}.`);
   }
 
