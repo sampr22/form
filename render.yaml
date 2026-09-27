@@ -36,7 +36,7 @@ services:
     region: singapore
     plan: starter
     schedule: "*/5 * * * *"
-    buildCommand: npm install
+    buildCommand: npm install && npx playwright install --with-deps chromium
     startCommand: npm run daily
     envVars:
       - key: NODE_ENV
