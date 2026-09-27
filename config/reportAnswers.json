@@ -1,0 +1,43 @@
+{
+  "_instructions": "Source-of-truth answers for the daily report. Keep weekday/friday separate for fields that change by day. Empty strings are allowed when a question genuinely has no answer.",
+
+  "constants": {
+    "q1_employeeName": "Samprit Das",
+    "q3_designation": "Trainee Biologist",
+    "q4_reportingTo": "Dr. Anirban Roy",
+    "q6_metWeeklyDailyTargets": "yes",
+    "q9_newMethodDevOrValidation": "yes",
+    "q11_preparedOrReviewedSOPs": "yes",
+    "q12_submittedReportsToOtherDepts": "yes",
+    "q13_departmentsCollaboratedWith": "FDL",
+    "q16_trainingProvidedToJuniors": "yes",
+    "q17_tasksPendingFromLastWeek": "yes",
+    "q19_completedUrgentAssignments": "yes",
+    "q20_processImprovementWork": "yes",
+    "q21_challengesFaced": "yes",
+    "q22_supportResourcesNeeded": "chatgpt",
+    "q23_timeConsumptionPerActivity": "full"
+  },
+
+  "weekday": {
+    "q2_reportingPeriod": "",
+    "q5_projectsExperimentsCompleted": "",
+    "q7_experimentsAnalysesTestsPerformed": "",
+    "q8_samplesReportsCompleted": "",
+    "q10_methodProjectDescription": "",
+    "q14_meetingsTrainingAttended": "",
+    "q15_meetingTrainingTopic": "",
+    "q18_carriedForwardTasks": ""
+  },
+
+  "friday": {
+    "q2_reportingPeriod": "",
+    "q5_projectsExperimentsCompleted": "",
+    "q7_experimentsAnalysesTestsPerformed": "",
+    "q8_samplesReportsCompleted": "",
+    "q10_methodProjectDescription": "",
+    "q14_meetingsTrainingAttended": "",
+    "q15_meetingTrainingTopic": "",
+    "q18_carriedForwardTasks": ""
+  }
+}

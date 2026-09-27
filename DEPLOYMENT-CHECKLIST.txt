@@ -1,0 +1,13 @@
+DAILY REPORT LINK — DEPLOYMENT CHECKLIST
+
+1. Push this folder to GitHub.
+2. Render -> New -> Blueprint -> select the repository.
+3. Enter REVIEW_USER and REVIEW_PASSWORD.
+4. Deploy with ALLOW_SUBMIT=false.
+5. Test the dashboard and one manual cron run.
+6. Confirm the form fills and no submit occurs.
+7. Set ALLOW_SUBMIT=true on BOTH web and cron services.
+8. Daily flow:
+   20:00 IST fill starts
+   until 20:58 IST review/approval window
+   no approval = no submission

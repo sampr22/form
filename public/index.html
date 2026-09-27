@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="__CSRF_TOKEN__">
+  <title>Daily Report Control Center</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">MICROSOFT FORMS AUTOMATION</p>
+        <h1>Daily Report Control Center</h1>
+        <p class="muted">Review every answer before submission.</p>
+      </div>
+      <div class="top-actions">
+        <button class="ghost" id="refreshBtn">Refresh</button>
+        <button class="ghost" onclick="window.print()">Print</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero card">
+        <div>
+          <p class="label">TODAY</p>
+          <div class="date" id="today">—</div>
+          <div class="muted" id="timezone">—</div>
+        </div>
+        <div class="status-wrap">
+          <p class="label">STATUS</p>
+          <div id="statusBadge" class="status neutral">Loading…</div>
+          <div class="countdown" id="countdown">—</div>
+        </div>
+      </section>
+
+      <section id="warning" class="notice hidden"></section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="label">REVIEW</p>
+            <h2>All report answers</h2>
+          </div>
+          <div class="mini" id="updatedAt">—</div>
+        </div>
+
+        <div id="answers" class="answers">
+          <div class="empty">Loading report…</div>
+        </div>
+
+        <div class="actions">
+          <button id="approveBtn" class="primary" disabled>Approve &amp; Submit</button>
+          <button id="rejectBtn" class="danger" disabled>Reject / Do Not Submit</button>
+        </div>
+        <p class="muted footnote">
+          Approval is the final authorization. The automation will not submit unless you explicitly approve.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="label">TRACKING</p>
+            <h2>Recent runs</h2>
+          </div>
+          <div class="mini">Auto-refresh: 5s</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Status</th><th>Updated</th><th>Notes</th></tr>
+            </thead>
+            <tbody id="history"><tr><td colspan="4">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Daily Report Link</span>
+      <span>Safe submit mode</span>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

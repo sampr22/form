@@ -1,0 +1,8 @@
+{
+  "timezone": "Asia/Kolkata",
+  "defaultRunTimeIST": "20:00",
+  "cutoffTimeIST": "20:58",
+  "approvalPollSeconds": 5,
+  "stateTtlSeconds": 604800,
+  "historyTtlSeconds": 7776000
+}
