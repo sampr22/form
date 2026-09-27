@@ -12,16 +12,6 @@ services:
         value: production
       - key: TIMEZONE
         value: Asia/Kolkata
-      - key: RUN_HOUR_IST
-        value: "20"
-      - key: RUN_MINUTE_IST
-        value: "0"
-      - key: CUTOFF_HOUR_IST
-        value: "20"
-      - key: CUTOFF_MINUTE_IST
-        value: "58"
-      - key: APPROVAL_POLL_SECONDS
-        value: "5"
       - key: ALLOW_SUBMIT
         value: "false"
       - key: FORM_URL
@@ -35,39 +25,35 @@ services:
           name: daily-report-kv
           type: keyvalue
           property: connectionString
+      - key: STATE_TTL_SECONDS
+        value: "604800"
+      - key: HISTORY_TTL_SECONDS
+        value: "7776000"
 
   - type: cron
     name: daily-report-runner
     runtime: node
     region: singapore
     plan: starter
-    schedule: "30 14 * * *"
-    buildCommand: npm install && npx playwright install --with-deps chromium
+    schedule: "*/5 * * * *"
+    buildCommand: npm install
     startCommand: npm run daily
     envVars:
       - key: NODE_ENV
         value: production
       - key: TIMEZONE
         value: Asia/Kolkata
-      - key: CUTOFF_HOUR_IST
-        value: "20"
-      - key: CUTOFF_MINUTE_IST
-        value: "58"
-      - key: APPROVAL_POLL_SECONDS
-        value: "5"
-      - key: STATE_TTL_SECONDS
-        value: "604800"
-      - key: HISTORY_TTL_SECONDS
-        value: "7776000"
-      - key: ALLOW_SUBMIT
-        value: "false"
       - key: FORM_URL
-        value: https://forms.cloud.microsoft/pages/responsepage.aspx?id=0AXnVXRck0GwwTa-4NQ-bvGJJtgnRZ5Fseet11Dp2IdUNDM3UUNMaSVQySjBDSzc5WExJUzVOM0lLNS4u&origin=lprLink&route=shorturl
+        value: https://forms.cloud.microsoft/pages/responsepage.aspx?id=0AXnVXRck0GwwTa-4NQ-bvGJJtgnRZ5Fseet11Dp2IdUNDM3UUNaSVQySjBDSzc5WExJUzVOM0lLNS4u&origin=lprLink&route=shorturl
       - key: REDIS_URL
         fromService:
           name: daily-report-kv
           type: keyvalue
           property: connectionString
+      - key: STATE_TTL_SECONDS
+        value: "604800"
+      - key: HISTORY_TTL_SECONDS
+        value: "7776000"
 
   - type: keyvalue
     name: daily-report-kv
