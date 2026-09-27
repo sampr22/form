@@ -1,12 +1,10 @@
 {
   "name": "daily-report-link",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Daily Microsoft Forms report automation with an approval dashboard for Render.",
+  "description": "Daily Microsoft Forms report automation with a configurable scheduler, review dashboard and multi-channel notifications.",
   "type": "module",
-  "engines": {
-    "node": ">=20"
-  },
+  "engines": { "node": ">=20" },
   "scripts": {
     "validate": "node scripts/validate-config.js",
     "inspect": "node automation/inspectForm.js",
@@ -17,6 +15,8 @@
   "dependencies": {
     "express": "^5.1.0",
     "ioredis": "^5.8.2",
-    "playwright": "^1.63.0"
+    "nodemailer": "^10.0.10",
+    "playwright": "^1.63.0",
+    "web-push": "^3.6.7"
   }
 }
